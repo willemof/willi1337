@@ -1,0 +1,74 @@
+---
+title: "Extra assignments"
+author: "Willem"
+date: '`r Sys.Date()`'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Hi-ho!
+
+Alrighty, so not all of us are up to speed with RStudio, Rmarkdown, Github, etc etc. Thats ok!
+
+
+# Operating-Systems
+
+So I think we have two people on MacOS, and four people on windows. Sorry Mac users, I personally have very little experience with how things work so I will only be able to speak from my experience as a windows-user. 
+
+# Download Git
+
+To be honest... I'm not sure if the class explained the material all that well. I think a better approach would be to download Git before doing anything in RStudios. So basically get Git, do all the installations, etc, etc, until you get the program which is basically a command-prompt.
+
+# Download R, and Rstudio
+
+Again, somehow you gotta download and install R and R studio. Then, when you open Rstudio, you can open a "new project" open through Git post it into whatever repository in Github that you want the project to be synced to. From there your directory will have a Github folder with whatever name you names your project with some automatically generated R files, like .gitignore, .Rhistory, yourproject.Rproj, a README.md, if you enabled that on your Github repository. 
+
+# Making pdfs
+
+This wasn't covered in class, but basically you can make LaTeX-documents in RStudios if you download the right package.
+
+Run the following lines in your console:
+> **install.packages("tinytex")**
+
+> **tinytex::install_tinytex()**
+
+This will install tinytex, which will enable you to knit your markdown as a pdf.
+
+##The Assignments
+
+> We are instructed to arrange a lemonade sale to finance for a trip.
+
+Gonna skip the whole motivation/schmotivation spiel, because I would spend too much time on something that isn't directly relevant for the assignment.
+
+>**The estimated price to travel is $300**
+
+>Time for business
+
+##Lemonade sales
+```{r}
+prices <- c(30,40,10,20)
+print(prices)
+```
+
+>sum of prices:
+
+```{r, echo=FALSE}
+sum(prices)
+```
+
+>names of lemonade:
+
+```{r,echo=FALSE}
+names <- c("chunky delight", "The big one", "One shotter", "Fresh Squeeze")
+
+library(tidyverse)
+
+lemon_menu<- tibble(prices, names)
+
+lemon_menu
+```
+
+>I like the chunky delight, which is the first row, costs 30. (Pretty expensive lemonade)
