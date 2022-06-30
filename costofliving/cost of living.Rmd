@@ -1,0 +1,17 @@
+---
+title: "Cost of living"
+author: "Willem"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=TRUE}
+library(tidyverse)
+costofliving <- read_csv("cost of living/costofliving.csv")
+
+
+```

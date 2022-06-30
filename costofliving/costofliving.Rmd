@@ -1,0 +1,176 @@
+---
+title: "Cost of living"
+author: "Willem"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+> warning=FALSE,error=FALSE,message=FALSE #Could put into setup to make it apply to everything
+
+
+```{r, echo=TRUE}
+library(tidyverse)
+library(janitor)
+costofliving <- read_csv("costofliving.csv")
+
+costofliving_clean<- costofliving %>%
+  clean_names
+```
+
+Tidyverse function
+- select
+- filter
+- mutate
+- rename
+- group_by
+- summarize
+
+##Demonstrating select function 
+*(which manipulates columns)*
+```{r, eval=FALSE} 
+costofliving_subset<-costofliving_clean %>%  #This is a comment
+  select(cost_of_living_index,groceries_index)
+```
+
+##
+```{r}
+allbutcostofliving<-costofliving_clean %>%
+  select(-c(cost_of_living_index, rent_index))
+```
+
+```{r}
+costofliving_clean %>%
+  select(c(-cost_of_living_index))
+```
+
+
+###filter (selects rows)
+```{r}
+costofliving_clean %>%
+  filter(cost_of_living_index<100)
+```
+
+
+```{r}
+costofliving_clean %>%
+  filter(cost_of_living_index>=100) ## cities that are more or as expensive as New York
+```
+
+```{r}
+costofliving_clean %>%
+  filter(city== "Oslo, Norway") ##Will only give rows where the city is Oslo, Norway
+```
+
+```{r}
+costofliving_clean %>%
+  filter(city %in% c("Oslo, Norway",
+                        "Bergen, Norway",
+                          "Trondheim, Norway"))
+```
+
+### rename
+
+`rename` changes the name of a variable
+
+```{r, eval=FALSE}
+dataset %>%
+  rename(new_variablr_name = old_variable_name)
+```
+
+
+```{r}
+costofliving_clean <- costofliving_clean %>%
+  rename(cofi = cost_of_living_index)
+```
+
+### separate and unite
+
+```{r}
+costofliving_clean <- costofliving_clean %>%
+  separate(city, into = c("city", "country"), sep=", ")
+```
+
+
+### mutate
+```{r}
+costofliving_clean %>%
+  select(-c(x1,rank))
+```
+
+
+```{r}
+costofliving_clean %>%
+  mutate(share = restaurant_price_index/local_purchasing_power_index)
+```
+
+
+##ifelse
+
+```{r}
+costofliving_clean %>%
+  mutate(norway = ifelse(country %in% c("Norway", "Sweden"), 1, 0))
+
+```
+
+> when multiple values use %in%, when individual ==
+
+
+### summarise and group_by
+
+1. summarise gives ssummary statistics
+
+- group_by gives the summary statistics per some variable(s)
+
+```{r}
+costofliving_clean %>%
+  summarise(cofi_sum = sum(cofi, na.rm = TRUE))
+```
+
+```{r}
+costofliving_clean %>%
+  group_by(country) %>%
+  summarise(cofi_sum =sum(cofi, na.rm=TRUE)) %>%
+ungroup()
+```
+
+- min
+- max
+- mean
+- median
+- sd
+- sum
+count
+
+```{r}
+
+costofliving_clean %>%
+  group_by(country) %>%
+  summarise(avg_cofi = mean(cofi, na.rm=TRUE)) %>%
+  ungroup()
+```
+
+
+```{r}
+costofliving_clean %>%
+  group_by(country) %>%
+  count() %>%
+  arrange(desc(n))%>%
+ungroup()
+```
+##Nice tables
+```{r}
+library(kableExtra)
+
+smalltable<-costofliving_clean %>%
+  select(country, city, cofi) %>%
+  filter(city %in% c("Oslo", "Bergen", "Trondheim"))
+
+smalltable %>%
+  kable() %>%
+  kable_styling()
+
+```
+
